@@ -1,0 +1,32 @@
+{% paginate collection.products by 3 %}
+  <div class="collection-template">
+    <h1 class="h1">{{ collection.title }}</h1>
+    <div class="product-cards">
+      {% for product in collection.products %}
+        <div class="card-item">
+          <div class="card-media">
+            <a href="{{ product.url | within: collection }}">
+              <div class="product--img" style="background-image: url({{ product.featured_image.src | img_url: 'large' }});"></div>
+            </a>
+          </div>
+          <div class="card-content">
+            <a href="{{ product.url | within: collection }}">
+              <h3 class="product-title">{{ product.title }}</h3>
+              <span class="price">
+                {{ product.price | money }}
+                {% unless product.available %}<br><strong>sold out</strong>
+                {% endunless %}
+              </span>
+            </a>
+
+          </div>
+        </div>
+      {% else %}
+        <p>no matches</p>
+      {% endfor %}
+    </div>
+    {% if paginate.pages > 1 %}
+      {{ paginate | default_pagination }}
+    {% endif %}
+  </div>
+{% endpaginate %}

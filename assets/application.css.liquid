@@ -1,0 +1,176 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+img {
+  width: 100%;
+  display: block;
+}
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 12px;
+}
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+div#thumbnailSlider {
+  max-width: 600px;
+  margin: auto;
+}
+.product-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 12px;
+}
+.h1 {
+  margin-top: 100px;
+}
+.product--img {
+  background-size: cover;
+  padding-top: 100%;
+  background-position: center;
+}
+.card-content a {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  align-items: center;
+  justify-items: stretch;
+  padding: 0 5px;
+  text-decoration: none;
+  color: #263c6c;
+  font-size: 14px;
+  font-weight: 300;
+  gap: 10px;
+}
+span.price {
+  display: block;
+  margin: 1em auto;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.product-row {
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+.page-width {
+  max-width: 1200px;
+  margin: 30px auto 20px;
+}
+.product-thumbnails {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 30px auto 20px;
+}
+.red-btn {
+  display: block;
+  background: #7a1501;
+  color: #fff;
+  padding: 12px;
+  font-size: 1.2rem;
+  margin: 20px auto;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+}
+.quantity-selector {
+  display: block;
+  margin: 10px auto;
+}
+#cart-notif-txt {
+  display: block;
+  color: green;
+  font-weight: 700;
+  margin-top: -12px;
+  margin-bottom: 20px;
+}
+.spinnerCart {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 32px;
+  border-radius: 100%;
+  height: 32px;
+  border: 3px solid lightgray;
+  border-top-color: gray;
+  animation: Rotate 1.2s linear 0s infinite forwards;
+}
+@keyframes Rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.productGallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.hide {
+  display: none;
+}
+.singleSelector {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 6px auto 20px;
+  padding: 6px 3px;
+  font-size: 18px;
+}
+.swatchBoxContainer {
+  display: flex;
+  gap: 5px;
+}
+.swatchName {
+  display: block;
+  font-size: 18px;
+  color: #7a1501;
+  border-radius: 4px;
+  padding: 7px 14px;
+  margin: 3px;
+  line-height: 26px;
+  outline: solid 1px #7a1501;
+}
+.SwatchBox .singleSelector {
+  display: none;
+}
+.SwatchBox input:checked + label {
+  outline: solid 2px #7a1501;
+}
+.singleSelectorContainer {
+  display: grid;
+  gap: 15px 0;
+  margin-bottom: 20px;
+}
+.nav-bar-items a {
+  color: #000;
+  display: inline-block;
+}
+@media(max-width:991px) {
+  .product-cards,
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  div#thumbnailSlider {
+    max-width: 480px;
+  }
+}
+@media(max-width:767px) {
+  div#thumbnailSlider {
+    max-width: 420px;
+  }
+}
+/*  */

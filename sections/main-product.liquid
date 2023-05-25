@@ -1,0 +1,183 @@
+{{ 'owl.css' | asset_url | stylesheet_tag }}
+{{ 'select.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://unpkg.com/photoswipe@5.2.2/dist/photoswipe.css">
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign featured_image = current_variant.featured_image | default: product.featured_image %}
+<div class="product-template">
+  <div class="grid page-width container">
+    <div class="product-wrapper">
+      <div class="col-12 col-md-6">
+<div {%if section.settings.galleryType != "gallery"%} id="thumbnailSlider" class="owl-carousel owl-theme" {% else %}class="productGallery" {%endif%}>
+          {% for image in product.images %}
+            <div class="thumbnailWrapper imageContainer">
+              <a href="{{ image.src | img_url: 'medium' }}" class="lightbox">
+                <img
+                  src="{{ image.src | img_url: 'large' }}"
+                  style="width:100%;display:block;">
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+    <div class="product-info">
+      <h1>{{ product.title }}</h1>
+      <span class="regular-money price">{{ current_variant.price | money }}</span>
+      {% form 'product', product, novalidate:'novalidate' %}
+        {% unless product.has_only_default_variant %}  
+          <div class="singleSelectorContainer">
+            {% for option in product.options_with_values %}
+               <div class="singleSelectorWrapper">
+                <label>{{option.name}}</label>
+                {% if section.settings.optionType == "swatch" %}
+                  <div class="swatchBoxContainer">
+                    {% for value in option.values %}
+                      <div class="SwatchBox">
+                        <input type="radio" name="{{ option.name | handleize }}" class="singleSelector" id="singleSelector-{{ option.name | handleize }}-{{ forloop.index }}" value="{{ value | escape }}" {% if option.selected_value == value %} checked{% endif %}>
+                        <label for="singleSelector-{{ option.name | handleize }}-{{ forloop.index }}" class="swatchName">{{ value | escape }}</label>
+                      </div>
+                      {% endfor %}
+                  </div>
+                {% else %}
+                <select class="singleSelector" id="singleSelector-{{forloop.index}}">
+                  {% for value in option.values %}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %} selected{% endif %}>{{value}}</option>
+                    {% endfor %}
+                </select>
+                  {% endif %}
+               </div> 
+            {%endfor%}
+          </div>
+        {% endunless %}
+        <select name="id" id="productSelect" class="hide">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option value="{{ variant.id }}">
+                {{ variant.title }} - {{ variant.price | money_with_currency }}
+              </option>
+            {% else %}
+              <option disabled="disabled">
+                {{ variant.title }} - sold out
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+
+        <div class="quantity-selector">
+          <label for="Quantity">quantity</label>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1">
+        </div>
+        <button type="submit" name="add" class="red-btn add-to-cart" id="AddToCart">Add to cart
+          <span id="spinner"></span>
+        </button>
+        <span id="cart-notif-txt"></span>
+      {% endform %}
+      <div>{{ product.description }}</div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {"name": "Product page",
+  "settings": [
+    {
+        "type": "select",
+        "id": "galleryType",
+        "label": "Gallery Type",
+        "options": [
+        {
+            "value": "gallery",
+            "label": "Gallery"        
+        },
+        {
+            "value": "slider",
+            "label": "Slider"        
+        }   
+        ]
+
+    },
+    {
+        "type": "select",
+        "id": "optionType",
+        "label": "Option Type",
+        "options": [
+        {
+            "value": "select",
+            "label": "Dropdown"        
+        },
+        {
+            "value": "swatch",
+            "label": "Swatch"        
+        }   
+        ]
+
+    }
+  ] 
+  }
+{% endschema %}
+
+{% javascript %}  
+  jQuery(document).ready(function() {
+    jQuery("#thumbnailSlider").owlCarousel({
+        dots: true,
+         items: 1,
+          margin: 0,
+           nav: false,
+           autoHeight: true,
+           responsive: {
+    0: {
+      items: 1
+    },
+
+    600: {
+      items: 1
+    },
+
+    1024: {
+      items: 1
+    },
+
+    1366: {
+      items: 1
+    }
+  }
+        });
+    
+  });
+  // 
+
+
+
+{% endjavascript %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$(document).ready(function(){
+  // $('select:not(.hide)').select2();
+  $('.singleSelector').on('change', function(){
+  let variantName = '';
+$('.singleSelectorWrapper').each(function(i){
+  const tagname = $(this).find('.singleSelector')[0].nodeName;
+  if(tagname == "SELECT"){
+    variantName += (i != 0 ? '/' : '') + $(this).find('.singleSelector').val();
+  } else if(tagname == "INPUT") {
+    $(this).find('.singleSelector').each(function(){
+      if($(this).is(':checked')){
+        variantName += (i != 0 ? ' / ' : '') + $(this).val();
+      }
+    })
+  } 
+})
+console.log(variantName);
+  $('#productSelect option').each(function(){
+    if($(this).text().includes(variantName)){
+      $(this).parent().val($(this).val());
+    }
+   
+  })
+  
+})
+})
+
+</script>

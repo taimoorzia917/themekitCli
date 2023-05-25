@@ -1,0 +1,33 @@
+<section data-id="{{section.id}}">
+  <div class="heroBanner">
+    <div class="heroImg" style="background-image: url({{section.settings.img |img_url: 'master'}});">
+      <h1></h1>
+    </div>
+  </div>
+
+</section>
+<style>
+  .heroImg {
+    background-size: cover;
+    padding-top: 52.25%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>
+{% schema %}
+  {
+    "name": "hero banner",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Main Banner"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero Banner"
+      }
+    ]
+  }
+{% endschema %}
